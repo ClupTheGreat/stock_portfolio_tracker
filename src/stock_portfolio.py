@@ -1,5 +1,6 @@
 import yfinance as yf
 from data_loader import DataLoader
+import sqlite_commands
 
 class StockPortfolio:
     def __init__(self):
