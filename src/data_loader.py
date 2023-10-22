@@ -8,14 +8,23 @@ import os
 #downloading dataframe
 # yf.pdr_override()
 class DataLoader:
-    def get_stock_data(self, symbol):
-        ticker = yf.download(symbol, period = '1d' , interval='1m')
-        return ticker.tail(1)
+    def get_stock_data(self, symbol, time_period):
+        ticker = yf.download(symbol+".NS", period = '{}d'.format(time_period) , interval='1d')
+        return ticker
+        # return ticker.tail(1)
+
+    def get_stock_data_weekly(self, symbol, time_period):
+        ticker = yf.download(symbol+".NS", period = '{}d'.format(time_period) , interval='1wk')
+        return ticker
+    
+    def get_stock_data_monthly(self, symbol, time_period):
+        ticker = yf.download(symbol+".NS", period = '{}d'.format(time_period) , interval='1mo')
+        return ticker
 
     def get_stock_data_historical(self, symbol):
-        ticker = yf.download(symbol)
+        ticker = yf.Ticker(symbol+".NS")
         save_path = os.path.join("data", f"{symbol}_historical_data.csv")
-        ticker.to_csv(save_path)
+        ticker.history(period="max").to_csv(save_path)
         print(f"Data saved to {save_path}")
         return ticker
 # Example:

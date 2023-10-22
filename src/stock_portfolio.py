@@ -1,6 +1,9 @@
 import yfinance as yf
 from data_loader import DataLoader
+import stock
 import sqlite_commands
+
+stocks_data = stock.Stock("ZOMATO")
 
 class StockPortfolio:
     def __init__(self):
@@ -8,20 +11,21 @@ class StockPortfolio:
         self.stocks_owned = {}
         self.data_loader = DataLoader()
     
-    def add_stock(self, symbol, quantity, purchase_price):
+    def add_stock(self, stocks_data, quantity, purchase_price):
         #Add stock to portfolio
-        if symbol not in self.stocks_owned:
-            self.stocks_owned[symbol] = {'quantity' : quantity, 'purchase_price' : purchase_price}
+        if stocks_data.symbol not in self.stocks_owned:
+            self.stocks_owned[stocks_data.symbol] = {'quantity' : quantity, 'purchase_price' : purchase_price}
         else:
             # Adds the stock quantity and averages the price
-            self.stocks_owned[symbol]['quantity'] += quantity
-            self.stocks_owned[symbol]['purchase_price'] += (self.stocks_owned[symbol]['purchase_price']+purchase_price)/2
+            self.stocks_owned[stocks_data.symbol]['quantity'] += quantity
+            self.stocks_owned[stocks_data.symbol]['purchase_price'] += (self.stocks_owned[stocks_data.symbol]['purchase_price']+purchase_price)/2
         
-    def remove_stock(self, symbol, quantity):
+    def remove_stock(self, stocks, quantity):
+        #FIX
         #Remove stock from portfolio
-        if symbol in self.stocks:
+        if stocks.symbol in self.stocks:
             if quantity == self.stocks_owned['quantity']:
-                del self.stocks_owned[symbol]
+                del self.stocks_owned[stocks.symbol]
             elif quantity <= self.stocks_owned['quantity']:
                 self.stocks_owned['quantity'] -= quantity
             elif quantity > 0:
@@ -32,6 +36,7 @@ class StockPortfolio:
             print("Enter a valid stock to remove")
     
     def total_portfolio_value(self):
+        #FIX
         # Calculate total portfolio value
         stock_portfolio_value = 0.0
         for stock in self.stocks_owned.items():
