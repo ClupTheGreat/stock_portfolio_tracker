@@ -1,6 +1,6 @@
 import yfinance as yf
 
-ticker = yf.download("ZOMATO.NS",period = '1mo', interval='1wk')
+ticker = yf.download("ZOMATO.NS",period = '1y', interval='1mo')
 # print(ticker)
 # print(ticker["Open"])
 # print(str(ticker.index[3])[0:10])

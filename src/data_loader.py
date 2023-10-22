@@ -14,11 +14,11 @@ class DataLoader:
         # return ticker.tail(1)
 
     def get_stock_data_weekly(self, symbol, time_period):
-        ticker = yf.download(symbol+".NS", period = '{}d'.format(time_period) , interval='1wk')
+        ticker = yf.download(symbol+".NS", period = '{}mo'.format(time_period) , interval='1wk')
         return ticker
     
     def get_stock_data_monthly(self, symbol, time_period):
-        ticker = yf.download(symbol+".NS", period = '{}d'.format(time_period) , interval='1mo')
+        ticker = yf.download(symbol+".NS", period = '{}y'.format(time_period) , interval='1mo')
         return ticker
 
     def get_stock_data_historical(self, symbol):

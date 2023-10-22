@@ -1,1 +1,2 @@
-add_stock_to_db()
+07)
+conn.commit()

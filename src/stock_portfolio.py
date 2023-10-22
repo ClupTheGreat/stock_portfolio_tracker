@@ -21,7 +21,7 @@ class StockPortfolio:
             self.stocks_owned[stocks_data.symbol]['purchase_price'] += (self.stocks_owned[stocks_data.symbol]['purchase_price']+purchase_price)/2
         
     def remove_stock(self, stocks, quantity):
-        #FIX
+        #TODO
         #Remove stock from portfolio
         if stocks.symbol in self.stocks:
             if quantity == self.stocks_owned['quantity']:
@@ -36,7 +36,7 @@ class StockPortfolio:
             print("Enter a valid stock to remove")
     
     def total_portfolio_value(self):
-        #FIX
+        #TODO
         # Calculate total portfolio value
         stock_portfolio_value = 0.0
         for stock in self.stocks_owned.items():

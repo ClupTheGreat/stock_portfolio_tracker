@@ -86,30 +86,94 @@ def add_stock_to_db():
 def add_price_to_db(symbol, interval,stock_id):
   stock_id = 107
   data_loader = DataLoader()
-
-  latest_date_query = "SELECT MAX(date) FROM stock_price_daily WHERE stock_id = {}".format(stock_id)
-  c.execute(latest_date_query)
-  latest_date = c.fetchone()[0]
-  latest_date = pd.to_datetime(latest_date)
   
   if interval == "daily":
+    #Date checking
+    latest_date_query = "SELECT MAX(date) FROM stock_price_daily WHERE stock_id = {}".format(stock_id)
+    c.execute(latest_date_query)
+    latest_date = c.fetchone()[0]
+    latest_date = pd.to_datetime(latest_date)
+
+    #Loading in data
     stock_data = data_loader.get_stock_data(symbol, 30)
     for index,row in stock_data.iterrows():
       date = index
       date = pd.to_datetime(date)
-      if date > latest_date:
+      if latest_date != None:
+        if date > latest_date:
+          open_value = row['Open']
+          high_value = row['High']
+          low_value = row['Low']
+          close_value = row['Close']
+          adj_close_value = row['Adj Close']
+          volume_value = row['Volume']
+          query = "INSERT INTO stock_price_daily (stock_id, date, open, high, low, close, adj_close, volume) VALUES ({}, '{}', {}, {}, {}, {}, {}, {})".format(stock_id, date, open_value, high_value, low_value, close_value, adj_close_value, volume_value)
+          c.execute(query)
+    
+  elif interval == "weekly":
+    #Date Checking
+    latest_date_query = "SELECT MAX(date) FROM stock_price_weekly WHERE stock_id = {}".format(stock_id)
+    c.execute(latest_date_query)
+    latest_date = c.fetchone()[0]
+    latest_date = pd.to_datetime(latest_date)
+
+    #Loading data
+    stock_data = data_loader.get_stock_data_weekly(symbol, 30)
+    for index,row in stock_data.iterrows():
+      date = index
+      date = pd.to_datetime(date)
+      if latest_date != None:
+        if date > latest_date:
+          open_value = row['Open']
+          high_value = row['High']
+          low_value = row['Low']
+          close_value = row['Close']
+          adj_close_value = row['Adj Close']
+          volume_value = row['Volume']
+          query = "INSERT INTO stock_price_weekly (stock_id, date, open, high, low, close, adj_close, volume) VALUES ({}, '{}', {}, {}, {}, {}, {}, {})".format(stock_id, date, open_value, high_value, low_value, close_value, adj_close_value, volume_value)
+          c.execute(query)
+      else:
         open_value = row['Open']
         high_value = row['High']
         low_value = row['Low']
         close_value = row['Close']
         adj_close_value = row['Adj Close']
         volume_value = row['Volume']
-        query = "INSERT INTO stock_price_daily (stock_id, date, open, high, low, close, adj_close, volume) VALUES ({}, '{}', {}, {}, {}, {}, {}, {})".format(stock_id, date, open_value, high_value, low_value, close_value, adj_close_value, volume_value)
+        query = "INSERT INTO stock_price_weekly (stock_id, date, open, high, low, close, adj_close, volume) VALUES ({}, '{}', {}, {}, {}, {}, {}, {})".format(stock_id, date, open_value, high_value, low_value, close_value, adj_close_value, volume_value)
         c.execute(query)
-    
-  elif interval == "weekly":
     print("weekly")
+
   elif interval == "monthly":
+    #Date Checking
+    latest_date_query = "SELECT MAX(date) FROM stock_price_monthly WHERE stock_id = {}".format(stock_id)
+    c.execute(latest_date_query)
+    latest_date = c.fetchone()[0]
+    latest_date = pd.to_datetime(latest_date)
+
+    #Loading data
+    stock_data = data_loader.get_stock_data_monthly(symbol, 5)
+    for index,row in stock_data.iterrows():
+      date = index
+      date = pd.to_datetime(date)
+      if latest_date != None:
+        if date > latest_date:
+          open_value = row['Open']
+          high_value = row['High']
+          low_value = row['Low']
+          close_value = row['Close']
+          adj_close_value = row['Adj Close']
+          volume_value = row['Volume']
+          query = "INSERT INTO stock_price_monthly (stock_id, date, open, high, low, close, adj_close, volume) VALUES ({}, '{}', {}, {}, {}, {}, {}, {})".format(stock_id, date, open_value, high_value, low_value, close_value, adj_close_value, volume_value)
+          c.execute(query)
+      else:
+        open_value = row['Open']
+        high_value = row['High']
+        low_value = row['Low']
+        close_value = row['Close']
+        adj_close_value = row['Adj Close']
+        volume_value = row['Volume']
+        query = "INSERT INTO stock_price_monthly (stock_id, date, open, high, low, close, adj_close, volume) VALUES ({}, '{}', {}, {}, {}, {}, {}, {})".format(stock_id, date, open_value, high_value, low_value, close_value, adj_close_value, volume_value)
+        c.execute(query)
     print("monthly")
   else:
      print("error")
@@ -118,7 +182,7 @@ def add_price_to_db(symbol, interval,stock_id):
   
 # Run this file to execute the above function and add all the stocks to database
 # add_stock_to_db()
-add_price_to_db("ZOMATO","daily",107)
+add_price_to_db("ZOMATO","monthly",107)
 conn.commit()
 
 print(time.perf_counter())
