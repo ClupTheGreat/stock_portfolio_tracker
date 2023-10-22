@@ -4,6 +4,8 @@ import time
 import pandas as pd
 from data_loader import DataLoader
 
+#TODO: Create a method which allows you to delete
+
 print(time.perf_counter())
 
 conn = sqlite3.connect(os.path.join("data",'stocks.db'))
@@ -83,8 +85,13 @@ def add_stock_to_db():
       except:
          print("stock already present")
 
-def add_price_to_db(symbol, interval,stock_id):
-  stock_id = 107
+
+
+#Will be using this same function, since we have the latestdate, individually update whenever the stock is selected
+def add_price_to_db(symbol, interval):
+  get_stock_id = "SELECT DISTINCT stock_id FROM stock WHERE symbol = '{}'".format(symbol)
+  c.execute(get_stock_id)
+  stock_id = c.fetchone()[0]
   data_loader = DataLoader()
   
   if interval == "daily":
@@ -95,7 +102,7 @@ def add_price_to_db(symbol, interval,stock_id):
     latest_date = pd.to_datetime(latest_date)
 
     #Loading in data
-    stock_data = data_loader.get_stock_data(symbol, 30)
+    stock_data = data_loader.get_stock_data(symbol)
     for index,row in stock_data.iterrows():
       date = index
       date = pd.to_datetime(date)
@@ -109,6 +116,15 @@ def add_price_to_db(symbol, interval,stock_id):
           volume_value = row['Volume']
           query = "INSERT INTO stock_price_daily (stock_id, date, open, high, low, close, adj_close, volume) VALUES ({}, '{}', {}, {}, {}, {}, {}, {})".format(stock_id, date, open_value, high_value, low_value, close_value, adj_close_value, volume_value)
           c.execute(query)
+      else:
+        open_value = row['Open']
+        high_value = row['High']
+        low_value = row['Low']
+        close_value = row['Close']
+        adj_close_value = row['Adj Close']
+        volume_value = row['Volume']
+        query = "INSERT INTO stock_price_daily (stock_id, date, open, high, low, close, adj_close, volume) VALUES ({}, '{}', {}, {}, {}, {}, {}, {})".format(stock_id, date, open_value, high_value, low_value, close_value, adj_close_value, volume_value)
+        c.execute(query)
     
   elif interval == "weekly":
     #Date Checking
@@ -118,7 +134,7 @@ def add_price_to_db(symbol, interval,stock_id):
     latest_date = pd.to_datetime(latest_date)
 
     #Loading data
-    stock_data = data_loader.get_stock_data_weekly(symbol, 30)
+    stock_data = data_loader.get_stock_data_weekly(symbol)
     for index,row in stock_data.iterrows():
       date = index
       date = pd.to_datetime(date)
@@ -151,7 +167,7 @@ def add_price_to_db(symbol, interval,stock_id):
     latest_date = pd.to_datetime(latest_date)
 
     #Loading data
-    stock_data = data_loader.get_stock_data_monthly(symbol, 5)
+    stock_data = data_loader.get_stock_data_monthly(symbol)
     for index,row in stock_data.iterrows():
       date = index
       date = pd.to_datetime(date)
@@ -182,7 +198,17 @@ def add_price_to_db(symbol, interval,stock_id):
   
 # Run this file to execute the above function and add all the stocks to database
 # add_stock_to_db()
-add_price_to_db("ZOMATO","monthly",107)
+
+stock_list = pd.read_csv(os.path.join("data","nse_symbols.csv"))
+for i in range(len(stock_list["Sr. No."])):
+  if i>10:
+    break
+  # add_price_to_db(stock_list["Symbol"][i],"monthly")
+  add_price_to_db(stock_list["Symbol"][i],"daily")
+  # add_price_to_db(stock_list["Symbol"][i],"weekly")
+
+
+# add_price_to_db("TCS","monthly")
 conn.commit()
 
 print(time.perf_counter())
