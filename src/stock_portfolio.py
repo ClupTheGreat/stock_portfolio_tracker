@@ -3,7 +3,7 @@ from data_loader import DataLoader
 import stock
 import sqlite_commands
 
-stocks_data = stock.Stock("ZOMATO")
+# stocks_data = stock.Stock("ZOMATO")
 
 class StockPortfolio:
     def __init__(self):
@@ -36,22 +36,29 @@ class StockPortfolio:
             print("Enter a valid stock to remove")
     
     def total_portfolio_value(self):
+        stock_portfolio_value = 0.0
+        list_of_qandv = list(self.stocks_owned.values())
+        for i in range(0, len(list_of_qandv)):
+            quant = list_of_qandv[i]['quantity']
+            values = list_of_qandv[i]['purchase_price']
+            total_money_value = quant*values
+            stock_portfolio_value+=total_money_value
         #TODO
         # Calculate total portfolio value
-        stock_portfolio_value = 0.0
-        for stock in self.stocks_owned.items():
+        
+        # for stock in self.stocks_owned.items():
             # print(stock)
-            symbol = stock[0]
-            data = self.data_loader.get_stock_data(symbol)
+            # symbol = stock[0]
+            # data = self.data_loader.get_stock_data(symbol)
             # print(data['Close'].loc[data.index[0]]) getting price data
-            stock_portfolio_value += data['Close'].loc[data.index[0]]
+            # stock_portfolio_value += data['Close'].loc[data.index[0]]
         # for symbol, stock
         return stock_portfolio_value
         
-stock1 = "WIPRO.NS"
-stock2 = "INFY.NS"
-portfolio1 = StockPortfolio()
-portfolio1.add_stock(stock1,10,421)
-portfolio1.add_stock(stock2,10,1494)
-print(portfolio1.total_portfolio_value())
+# stock1 = stock.Stock("WIPRO")
+# stock2 = "INFY.NS"
+# portfolio1 = StockPortfolio()
+# portfolio1.add_stock(stock1,10,421)
+# portfolio1.add_stock(stock2,10,1494)
+# print(portfolio1.total_portfolio_value())
     

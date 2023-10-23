@@ -1,1 +1,1 @@
-add_price_to_db(stock_list["Symbol"][i],"daily")
+do_test("HDFCBANK")

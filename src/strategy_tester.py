@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import yfinance as yf
 
-ticker = yf.download("HDFCBANK.NS",period='5y', interval='1d')
+# ticker = yf.download("HDFCBANK.NS",period='5y', interval='1d')
 
 class SimpleMovingAverageBacktester:
     def __init__(self, data, short_window, long_window):
@@ -13,20 +13,20 @@ class SimpleMovingAverageBacktester:
         self.short_window = short_window
         self.long_window = long_window
         self.signals = pd.DataFrame(index=data.index)
-        self.signals['signal'] = 0.0  # 0.0 indicates no signal
+        self.signals['signal'] = 0.0 
     
     def calculate_pnl(self):
-        capital = 100000.0  # Starting capital
+        capital = 100000.0  
         position = 0.0
         pnl = []
 
         for i in range(len(self.signals)):
             price = self.data['Close'].iloc[i]
 
-            if self.signals['positions'].iloc[i] == 1.0:  # Buy signal
+            if self.signals['positions'].iloc[i] == 1.0: 
                 position = capital / price
                 capital = 0.0
-            elif self.signals['positions'].iloc[i] == -1.0:  # Sell signal
+            elif self.signals['positions'].iloc[i] == -1.0:  
                 capital = position * price
                 position = 0.0
 
@@ -49,12 +49,10 @@ class SimpleMovingAverageBacktester:
         ax.plot(self.signals['short_mavg'], label=f'Short {self.short_window} days MA')
         ax.plot(self.signals['long_mavg'], label=f'Long {self.long_window} days MA')
 
-        # Plot buy signals
         ax.plot(self.signals.loc[self.signals.positions == 1.0].index,
                  self.signals.short_mavg[self.signals.positions == 1.0],
                  '^', markersize=10, color='g', label='Buy Signal')
 
-        # Plot sell signals
         ax.plot(self.signals.loc[self.signals.positions == -1.0].index,
                  self.signals.short_mavg[self.signals.positions == -1.0],
                  'v', markersize=10, color='r', label='Sell Signal')
@@ -84,26 +82,26 @@ class SimpleMovingAverageBacktester:
             print("Percent Gain", percent_gain)
 
     def buy_and_hold_pnl(self):
-        capital = 100000.0  # Starting capital
+        capital = 100000.0  
         position = capital / self.data['Close'].iloc[0]
         pnl = [capital + position * price for price in self.data['Close']]
 
         return pnl
 
-# Example usage:
-# Assuming 'data' is a DataFrame with 'Date' and 'Close' columns
-# Adjust the parameters according to your strategy
 short_window = 40
 long_window = 100
 
-backtester = SimpleMovingAverageBacktester(ticker, short_window, long_window)
-backtester.generate_signals()
+def do_test(symbol):
+    text = symbol+".NS"
+    ticker = yf.download(text,period='5y', interval='1d')
+    backtester = SimpleMovingAverageBacktester(ticker, short_window, long_window)
+    backtester.generate_signals()
 
-backtester.print_pnl()
+    backtester.print_pnl()
 
-# Buy and Hold strategy for comparison
-buy_and_hold_pnl = backtester.buy_and_hold_pnl()
-print("\nBuy and Hold Strategy:")
-print(f"Starting Capital: 100000.0, Resulting Capital: {buy_and_hold_pnl[-1]:.2f}")
+    # Buy and hold strategy for comparison
+    buy_and_hold_pnl = backtester.buy_and_hold_pnl()
+    print("\nBuy and Hold Strategy:")
+    print(f"Starting Capital: 100000.0, Resulting Capital: {buy_and_hold_pnl[-1]:.2f}")
 
-backtester.plot_signals()
+    backtester.plot_signals()

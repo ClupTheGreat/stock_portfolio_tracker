@@ -6,7 +6,7 @@ from data_loader import DataLoader
 
 #TODO: Create a method which allows you to delete
 
-print(time.perf_counter())
+# print(time.perf_counter())
 
 conn = sqlite3.connect(os.path.join("data",'stocks.db'))
 
@@ -196,19 +196,25 @@ def add_price_to_db(symbol, interval):
   #  code
   return None
   
+def list_of_stocks():
+  # For now displays only top 10 stocks for visibility and performance reasons
+  query = "SELECT symbol FROM stock LIMIT 10"
+  c.execute(query)
+  return c.fetchall()
+
 # Run this file to execute the above function and add all the stocks to database
 # add_stock_to_db()
 
-stock_list = pd.read_csv(os.path.join("data","nse_symbols.csv"))
-for i in range(len(stock_list["Sr. No."])):
-  if i>10:
-    break
+# stock_list = pd.read_csv(os.path.join("data","nse_symbols.csv"))
+# for i in range(len(stock_list["Sr. No."])):
+#   if i>10:
+#     break
   # add_price_to_db(stock_list["Symbol"][i],"monthly")
-  add_price_to_db(stock_list["Symbol"][i],"daily")
+  # add_price_to_db(stock_list["Symbol"][i],"daily")
   # add_price_to_db(stock_list["Symbol"][i],"weekly")
 
 
 # add_price_to_db("TCS","monthly")
 conn.commit()
 
-print(time.perf_counter())
+# print(time.perf_counter())
