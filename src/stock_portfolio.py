@@ -2,6 +2,7 @@ import yfinance as yf
 from data_loader import DataLoader
 import stock
 import sqlite_commands
+import pickle
 
 # stocks_data = stock.Stock("ZOMATO")
 
@@ -54,7 +55,32 @@ class StockPortfolio:
             # stock_portfolio_value += data['Close'].loc[data.index[0]]
         # for symbol, stock
         return stock_portfolio_value
-        
+    
+# portfolio = StockPortfolio()
+# portfolio.add_stock(stock.Stock("ZOMATO"), 10, 100)
+
+
+# Saving and Loading a class
+# with open('portfolio.pickle', 'wb') as file:
+#     pickle.dump(portfolio, file)
+
+# del portfolio
+# try:
+#     print(portfolio)
+# except:
+#     print("deleted")
+
+# with open('portfolio.pickle', 'rb') as file:
+#     print("open")
+#     loaded_portfolio = pickle.load(file)
+
+# try:
+#     print("new",loaded_portfolio)
+# except:
+#     print("failed")
+
+
+
 # stock1 = stock.Stock("WIPRO")
 # stock2 = "INFY.NS"
 # portfolio1 = StockPortfolio()
