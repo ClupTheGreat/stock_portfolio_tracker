@@ -37,13 +37,13 @@ class StockPortfolio:
             print("Enter a valid stock to remove")
     
     def total_portfolio_value(self):
-        stock_portfolio_value = 0.0
+        self.stock_portfolio_value = 0.0
         list_of_qandv = list(self.stocks_owned.values())
         for i in range(0, len(list_of_qandv)):
             quant = list_of_qandv[i]['quantity']
             values = list_of_qandv[i]['purchase_price']
             total_money_value = quant*values
-            stock_portfolio_value+=total_money_value
+            self.stock_portfolio_value+=total_money_value
         #TODO
         # Calculate total portfolio value
         
@@ -54,7 +54,23 @@ class StockPortfolio:
             # print(data['Close'].loc[data.index[0]]) getting price data
             # stock_portfolio_value += data['Close'].loc[data.index[0]]
         # for symbol, stock
-        return stock_portfolio_value
+        return self.stock_portfolio_value
+    
+    def holdings_value(self):
+        self.stocks_holdings_value = 0.0
+        list_of_stocks = list(self.stocks_owned.items())
+        list_current_price = []
+        for i in list_of_stocks:
+            symbol = i[0]
+            current_price = sqlite_commands.get_current_prices(symbol)
+            list_current_price.append(current_price)
+        for j in list_current_price:
+            self.stocks_holdings_value+=j
+        return self.stocks_holdings_value
+
+        
+        
+        
     
 # portfolio = StockPortfolio()
 # portfolio.add_stock(stock.Stock("ZOMATO"), 10, 100)
@@ -87,4 +103,3 @@ class StockPortfolio:
 # portfolio1.add_stock(stock1,10,421)
 # portfolio1.add_stock(stock2,10,1494)
 # print(portfolio1.total_portfolio_value())
-    

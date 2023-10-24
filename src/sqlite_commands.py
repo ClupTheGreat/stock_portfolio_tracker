@@ -195,12 +195,28 @@ def add_price_to_db(symbol, interval):
      print("error")
   #  code
   return None
+
+def get_stock_id_from_symbol(symbol):
+  query = "SELECT stock_id FROM stock WHERE symbol == '{}';".format(symbol)
+  c.execute(query)
+  val = c.fetchone()[0]
+  return val
+
+def get_current_prices(symbol):
+  add_price_to_db(symbol,"daily")
+  stock_id = get_stock_id_from_symbol(symbol)
+  query = 'SELECT close,MAX(date) FROM stock_price_daily WHERE stock_id == {};'.format(stock_id)
+  c.execute(query)
+  return c.fetchall()[0][0]
+
   
 def list_of_stocks():
   # For now displays only top 10 stocks for visibility and performance reasons
-  query = "SELECT symbol FROM stock LIMIT 10"
+  query = "SELECT symbol FROM stock"
   c.execute(query)
   return c.fetchall()
+
+get_current_prices("TCS")
 
 # Run this file to execute the above function and add all the stocks to database
 # add_stock_to_db()
