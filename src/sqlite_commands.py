@@ -216,7 +216,7 @@ def list_of_stocks():
   c.execute(query)
   return c.fetchall()
 
-get_current_prices("TCS")
+# get_current_prices("TCS")
 
 # Run this file to execute the above function and add all the stocks to database
 # add_stock_to_db()

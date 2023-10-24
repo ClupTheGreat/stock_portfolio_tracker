@@ -10,11 +10,14 @@ import stock_portfolio
 import stock
 import sqlite_commands
 import os
+import pickle
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"D:\Code\tkinter_des\figmatotk\build\assets\frame3")
 
 # Button lift needed, as new canvas is placed on top of it
+
+# BuySell
 
 def button_lift():
     for button in [button_1, button_2, button_3, button_4]:
@@ -24,32 +27,79 @@ def button_lift():
 # Accessing global variable state in order to hide and place canvas
 def change_canvas(next_canvas):
     exists = 0
+    exists_buttons = 0
     global current_canvas
     global testing_canvas
     global orders_canvas
+    global tkstring_total_value
+    global tkstring_holdings_value
+    tkstring_total_value = portfolio.total_portfolio_value()
+    tkstring_holdings_value = portfolio.holdings_value()
     current_canvas.place_forget()
     next_canvas.place(x = 0, y = 0)
     current_canvas = next_canvas
-    if current_canvas == testing_canvas or current_canvas == orders_canvas:
+    if current_canvas == testing_canvas:
         exists = 1
-        print(exists)
-        list_maker(exists)
-    else:
+        exists_buttons = 0
+        list_maker(exists, exists_buttons)
+    elif current_canvas == orders_canvas:
         print("Overhead non")
+        exists = 1
+        exists_buttons = 1
+        list_maker(exists, exists_buttons)
+    else:
         exists = 0
-        list_maker(exists)
+        exists_buttons = 0
+        list_maker(exists, exists_buttons)
     button_lift()
 
-    
 
 window = Tk()
 
 window.geometry("1280x720")
 window.configure(bg = "#242424")
 
-portfolio = stock_portfolio.StockPortfolio()
-portfolio.add_stock(stock.Stock("ZOMATO"), 12, 100)
-portfolio.add_stock(stock.Stock("TCS"), 12, 100)
+def load_portfolio():
+    if os.path.exists("saved_portfolio.pickle"):
+        with open("saved_portfolio.pickle", "rb") as file:
+            portfolio = pickle.load(file)
+            print("Existing portfolio loaded.")
+    else:
+        portfolio = stock_portfolio.StockPortfolio()
+        print("New portfolio created.")
+    
+    return portfolio
+
+def save_portfolio(portfolio):
+    with open("saved_portfolio.pickle", "wb") as file:
+        pickle.dump(portfolio, file)
+        print("Portfolio saved.")
+
+def delete_portfolio():
+    if os.path.exists("saved_portfolio.pickle"):
+        os.remove("saved_portfolio.pickle")
+        print("Portfolio deleted.")
+    else:
+        print("No portfolio found.")
+
+portfolio = load_portfolio()
+
+tkstring_total_value = StringVar()
+tkstring_holdings_value = StringVar()
+
+tkstring_total_value.set(portfolio.total_portfolio_value())
+tkstring_holdings_value.set(portfolio.holdings_value())
+
+def trigger_buy(a, b):
+    buy_stock_order(a, b)
+
+
+# portfolio.add_stock(stock.Stock("ZOMATO"), 12, 100)
+# portfolio.add_stock(stock.Stock("TCS"), 12, 100)
+
+# delete_portfolio()
+# save_portfolio(portfolio)
+
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
@@ -124,7 +174,7 @@ dashboard_canvas.create_text(
     120.0,
     550.0,
     anchor="nw",
-    text=portfolio.holdings_value(),
+    text=tkstring_holdings_value.get(),
     fill="#FFFFFF",
     font=("Inter", 34 * -1)
 )
@@ -166,7 +216,7 @@ dashboard_canvas.create_text(
     117.0,
     327.0,
     anchor="nw",
-    text=portfolio.total_portfolio_value(),
+    text=tkstring_total_value.get(),
     fill="#FFFFFF",
     font=("Inter", 34 * -1)
 )
@@ -253,29 +303,6 @@ orders_canvas.create_text(
     font=("Inter", 34 * -1)
 )
 
-buy_button_orders_image = PhotoImage(
-        file=os.path.join("src\\ui\\build\\assets\\frame4\\button_1.png"))
-buy_button_orders = Button(
-    image=buy_button_orders_image,
-    borderwidth=0,
-    highlightthickness=0,
-    command=lambda: print("button_1 clicked"),
-    relief="flat",
-    activebackground="#2C2C2C"
-)
-
-sell_button_orders_image = PhotoImage(
-        file=os.path.join("src\\ui\\build\\assets\\frame4\\button_2.png"))
-sell_button_orders = Button(
-    image=sell_button_orders_image,
-    borderwidth=0,
-    highlightthickness=0,
-    command=lambda: print("button_1 clicked"),
-    relief="flat",
-    activebackground="#2C2C2C"
-)
-
-
 # orders_canvas.create_text(
 #     123.0,
 #     112.0,
@@ -289,7 +316,7 @@ orders_canvas.create_text(
     123.0,
     110.0,
     anchor="nw",
-    text="Buy Stocks",
+    text="Buy Stocks :   Quantity",
     fill="#FFFFFF",
     font=("Inter", 34 * -1)
 )
@@ -431,8 +458,10 @@ def check(e):
     
 
 def fillout(e):
+    global current_symbol
     entry_stock.delete(0,END)
     entry_stock.insert(0, list_view_stocks.get(ACTIVE))
+    current_symbol = list_view_stocks.get(ACTIVE)
 
 
 def update_listbox(list_of_stocks):
@@ -441,6 +470,7 @@ def update_listbox(list_of_stocks):
         list_view_stocks.insert(END,item)
 
 entry_stock = Entry()
+entry_stock_qty = Entry()
 
 
 list_of_stocks = list(sqlite_commands.list_of_stocks())
@@ -453,12 +483,60 @@ update_listbox(clean_stocks)
 list_view_stocks.bind("<<ListboxSelect>>",fillout)
 entry_stock.bind("<KeyRelease>",check)
 
+buy_button_orders_image = PhotoImage(
+        file=os.path.join("src\\ui\\build\\assets\\frame4\\button_1.png"))
+buy_button_orders = Button(
+    image=buy_button_orders_image,
+    borderwidth=0,
+    highlightthickness=0,
+    command=lambda: trigger_buy(list_view_stocks.get(ACTIVE),entry_stock_qty.get()),
+    relief="flat",
+    activebackground="#2C2C2C"
+)
 
-def list_maker(exists):
-    if exists == 1:
+sell_button_orders_image = PhotoImage(
+        file=os.path.join("src\\ui\\build\\assets\\frame4\\button_2.png"))
+sell_button_orders = Button(
+    image=sell_button_orders_image,
+    borderwidth=0,
+    highlightthickness=0,
+    command=lambda: buysell(list_view_stocks.get(ACTIVE),"sell"),
+    relief="flat",
+    activebackground="#2C2C2C"
+)
+
+def buy_stock_order(symbol, qty):
+    price = sqlite_commands.get_current_prices(str(symbol).upper())
+    portfolio.add_stock(stock.Stock(symbol),qty,price)
+    save_portfolio(portfolio)
+    window.update_idletasks()
+
+def list_maker(exists, exists_buttons):
+    if exists == 1 and exists_buttons == 0:
         entry_stock.place(x=123, y=175)
+        entry_stock_qty.place(x=300, y=175)
         list_view_stocks.place(x = 123, y = 250)
-        # It works because I placed it at the correct spot
+        # test
+        buy_button_orders.place(
+        x=123.0,
+        y=432.0,
+        width=116.0,
+        height=51.0
+        )
+        sell_button_orders.place(
+        x=263.0,
+        y=432.0,
+        width=116.0,
+        height=51.0
+        )
+        entry_stock_qty.place_forget()
+        buy_button_orders.place_forget()
+        sell_button_orders.place_forget()
+    
+    elif exists == 1 and exists_buttons == 1:
+        entry_stock.place(x=123, y=175)
+        entry_stock_qty.place(x=300, y=175)
+        list_view_stocks.place(x = 123, y = 250)
         buy_button_orders.place(
         x=123.0,
         y=432.0,
@@ -474,10 +552,10 @@ def list_maker(exists):
         
     else:
         entry_stock.place_forget()
+        entry_stock_qty.place_forget()
         list_view_stocks.place_forget()
         buy_button_orders.place_forget()
         sell_button_orders.place_forget()
-        
         
 
 current_canvas.place(x = 0, y = 0)

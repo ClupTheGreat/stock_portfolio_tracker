@@ -40,8 +40,9 @@ class StockPortfolio:
         self.stock_portfolio_value = 0.0
         list_of_qandv = list(self.stocks_owned.values())
         for i in range(0, len(list_of_qandv)):
-            quant = list_of_qandv[i]['quantity']
-            values = list_of_qandv[i]['purchase_price']
+            quant = float(list_of_qandv[i]['quantity'])
+            values = float(list_of_qandv[i]['purchase_price'])
+            
             total_money_value = quant*values
             self.stock_portfolio_value+=total_money_value
         #TODO

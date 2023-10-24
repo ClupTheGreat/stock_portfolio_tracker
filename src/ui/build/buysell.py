@@ -17,7 +17,7 @@ ASSETS_PATH = OUTPUT_PATH / Path(r"D:\Code\tkinter_des\figmatotk\build\assets\fr
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
-def buysell():
+def buysell(symbol,state):
     window = Tk()
 
     window.geometry("771x490")
