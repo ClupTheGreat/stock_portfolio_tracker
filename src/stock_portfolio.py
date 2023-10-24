@@ -18,10 +18,11 @@ class StockPortfolio:
             self.stocks_owned[stocks_data.symbol] = {'quantity' : quantity, 'purchase_price' : purchase_price}
         else:
             # Adds the stock quantity and averages the price
-            self.stocks_owned[stocks_data.symbol]['quantity'] += quantity
-            self.stocks_owned[stocks_data.symbol]['purchase_price'] += (self.stocks_owned[stocks_data.symbol]['purchase_price']+purchase_price)/2
+            self.stocks_owned[stocks_data.symbol]['quantity'] = int(quantity) + int(self.stocks_owned[stocks_data.symbol]['quantity'])
+            self.stocks_owned[stocks_data.symbol]['purchase_price'] = (float((self.stocks_owned[stocks_data.symbol]['purchase_price']+float(purchase_price)))/2)
         
     def remove_stock(self, stocks, quantity):
+        
         #TODO
         #Remove stock from portfolio
         if stocks.symbol in self.stocks:

@@ -1,6 +1,7 @@
 import sys
 from data_loader import DataLoader
 from datetime import timedelta
+import sqlite_commands
 
 stock_names_list = []
 
@@ -9,6 +10,7 @@ class Stock:
     def __init__(self, symbol):
         self.symbol = symbol
         self.data_loader = DataLoader()
+        self.price = sqlite_commands.get_current_prices(symbol)
 
     def get_data(self, time_period):
         self.time_period = time_period
