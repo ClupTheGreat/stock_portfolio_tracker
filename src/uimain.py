@@ -1,16 +1,14 @@
 from pathlib import Path
-# from ui.build import dashboard
-from ui.build import holdings
-from ui.build import orders
-from ui.build import testing
-from ui.build import buysell
-
 from tkinter import *
 import stock_portfolio
 import stock
 import sqlite_commands
 import os
 import pickle
+
+"""
+Deprecated
+"""
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"D:\Code\tkinter_des\figmatotk\build\assets\frame3")

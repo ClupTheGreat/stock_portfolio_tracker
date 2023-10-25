@@ -1,11 +1,11 @@
-# from stock_portfolio import StockPortfolio
-# from data_loader import DataLoader
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import yfinance as yf
 
-# ticker = yf.download("HDFCBANK.NS",period='5y', interval='1d')
+"""
+Deprecated
+"""
 
 class SimpleMovingAverageBacktester:
     def __init__(self, data, short_window, long_window):

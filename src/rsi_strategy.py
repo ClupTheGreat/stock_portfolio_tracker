@@ -6,12 +6,11 @@ from stock import Stock
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# stock1 = Stock("ZOMATO")
-# stock2 = Stock("TCS")
-# stock3 = Stock("INFY")
-# stock4 = Stock("HDFCBANK")
-# stock5 = Stock("LICI")
-# stock6 = Stock('BRITANNIA')
+"""
+Deprecated
+"""
+
+
 
 def RSIcalc(stock):
     df = stock.daily_data.copy()

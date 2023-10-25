@@ -10,8 +10,11 @@ from data_loader import *
 from visualization import *
 from strats import *
 
-#Creating a portfolio and saving function
+# Creating a portfolio and saving function
 def load_portfolio():
+    """
+    Load existing portfolio from a pickle file or create a new one if not found.
+    """
     if os.path.exists("saved_portfolio.pickle"):
         with open("saved_portfolio.pickle", "rb") as file:
             portfolio = pickle.load(file)
@@ -23,11 +26,17 @@ def load_portfolio():
     return portfolio
 
 def save_portfolio(portfolio):
+    """
+    Save the portfolio to a pickle file.
+    """
     with open("saved_portfolio.pickle", "wb") as file:
         pickle.dump(portfolio, file)
         print("Portfolio saved.")
 
 def delete_portfolio():
+    """
+    Delete the saved portfolio file if it exists.
+    """
     if os.path.exists("saved_portfolio.pickle"):
         os.remove("saved_portfolio.pickle")
         print("Portfolio deleted.")
@@ -37,9 +46,11 @@ def delete_portfolio():
 portfolio = load_portfolio()
 
 def loading_stocks():
+    """
+    Load the list of owned stocks from the portfolio.
+    """
     list_of_owned_stocks = []
     for i in portfolio.stocks_owned.items():
-        print(portfolio.stocks_owned)
         stock_name = i[0]
         purchase_price = i[1]['purchase_price']
         # Convert purchase_price to float if it's a string
@@ -50,10 +61,12 @@ def loading_stocks():
         
         stock_info = f"{stock_name}@{formatted_price} - Quantity: {i[1]['quantity']}"
         list_of_owned_stocks.append(stock_info)
-        print(i)
     return list_of_owned_stocks
 
 def global_all_stocks():
+    """
+    Get a list of all available stocks from the database.
+    """
     stocks = list(sqlite_commands.list_of_stocks())
     clean_stocks = []
     for i in stocks:
@@ -89,26 +102,41 @@ class window(QtWidgets.QMainWindow):
 
 
     def portfolioValue(self):
+        """
+        Update and display the total value of the portfolio.
+        """
         portfolio_value = portfolio.total_portfolio_value()
         formatted_portfolio_value = f"{portfolio_value:.2f}"
         self.ui.value_investment.setText(str(formatted_portfolio_value))
     
     def holdingsValue(self):
+        """
+        Update and display the current value of holdings in the portfolio.
+        """
         holdings_value = portfolio.holdings_value()
         formatted_holdings_value = f"{holdings_value:.2f}"
         self.ui.value_investment_2.setText(str(formatted_holdings_value))
 
     def loadGlobalStocks(self):
+        """
+        Load and display the list of all available stocks in the global stocks list widget.
+        """
         self.ui.listWidget.clear()
         self.ui.listWidget.addItems(global_all_stocks())
         self.ui.listWidget.setCurrentRow(0)
     
     def loadStocks(self):
+        """
+        Load and display the list of owned stocks in the user's stocks list widget.
+        """
         self.ui.list_stock.clear()
         self.ui.list_stock.addItems(loading_stocks())
         self.ui.list_stock.setCurrentRow(0)
 
     def addStock(self):
+        """
+        Add a new stock to the user's portfolio
+        """
         currentIndex = self.ui.list_stock.currentRow()
         stock = self.ui.list_stock.item(currentIndex).text().split('@')[0]
         stock_qty, ok = QInputDialog.getText(self,"Add to your stock", "Stock Quantity")
@@ -120,6 +148,9 @@ class window(QtWidgets.QMainWindow):
             self.portfolioValue()
     
     def buyStock(self):
+        """
+        Buy additional stock
+        """
         currentIndex = self.ui.list_stock.currentRow()
         stock = self.ui.list_stock.item(currentIndex).text().split('@')[0]
         stock_qty, ok = QInputDialog.getText(self,"Add to your stock", "Stock Quantity")
@@ -132,6 +163,9 @@ class window(QtWidgets.QMainWindow):
             self.holdingsValue()
     
     def buyStock_o(self):
+        """
+        Buy additional stock from the other tab
+        """
         currentIndex = self.ui.listWidget.currentRow()
         stock = self.ui.listWidget.item(currentIndex).text()
         stock_qty, ok = QInputDialog.getText(self,"Add to your stock", "Stock Quantity")
@@ -144,6 +178,9 @@ class window(QtWidgets.QMainWindow):
             self.holdingsValue()
     
     def sellStock(self):
+        """
+        Sell stock
+        """
         currentIndex = self.ui.list_stock.currentRow()
         stock = self.ui.list_stock.item(currentIndex).text().split('@')[0]
         stock_qty, ok = QInputDialog.getText(self,"How many stocks to sell?", "Stock Quantity")
@@ -155,6 +192,9 @@ class window(QtWidgets.QMainWindow):
             self.holdingsValue()
     
     def sellStock_o(self):
+        """
+        Sell stock from the other tab
+        """
         currentIndex = self.ui.listWidget.currentRow()
         stock = self.ui.listWidget.item(currentIndex).text()
         stock_qty, ok = QInputDialog.getText(self,"How many stocks to sell?", "Stock Quantity")
@@ -167,25 +207,36 @@ class window(QtWidgets.QMainWindow):
     
     #TODO
     def dailyChart(self):
+        """
+        Display daily stock chart for the selected stock
+        """
         currentIndex = self.ui.listWidget.currentRow()
         symbol = self.ui.listWidget.item(currentIndex).text()
         stock = Stock(symbol)
         stock.create_chart_daily()
 
     def weeklyChart(self):
+        """
+        Display weekly stock chart for the selected stock
+        """
         currentIndex = self.ui.listWidget.currentRow()
         symbol = self.ui.listWidget.item(currentIndex).text()
         stock = Stock(symbol)
         stock.create_chart_weekly()
-
     
     def monthlyChart(self):
+        """
+        Display monthly stock chart for the selected stock
+        """
         currentIndex = self.ui.listWidget.currentRow()
         symbol = self.ui.listWidget.item(currentIndex).text()
         stock = Stock(symbol)
         stock.create_chart_monthly()
 
     def getSMA(self):
+        """
+        Display a Simple Moving Average (SMA) visualization for the selected stock
+        """
         currentIndex = self.ui.listWidget.currentRow()
         symbol = self.ui.listWidget.item(currentIndex).text()
         stock = Stock(symbol)
@@ -193,18 +244,27 @@ class window(QtWidgets.QMainWindow):
 
 
     def getMACD(self):
+        """
+        Display a Moving Average Convergence Divergence (MACD) visualization for the selected stock
+        """
         currentIndex = self.ui.listWidget.currentRow()
         symbol = self.ui.listWidget.item(currentIndex).text()
         stock = Stock(symbol)
         macd_visualization(stock.daily_data)
 
     def getRSI(self):
+        """
+        Display a Relative Strength Index (RSI) visualization for the selected stock
+        """
         currentIndex = self.ui.listWidget.currentRow()
         symbol = self.ui.listWidget.item(currentIndex).text()
         stock = Stock(symbol)
         rsi_visualization(stock.daily_data)
 
     def analMACD(self):
+        """
+        Run MACD backtest for the selected stock
+        """
         currentIndex = self.ui.listWidget.currentRow()
         symbol = self.ui.listWidget.item(currentIndex).text()
         stock = Stock(symbol)
@@ -213,6 +273,9 @@ class window(QtWidgets.QMainWindow):
         self.ui.listWidget_2.addItems(optim)
 
     def analSMA(self):
+        """
+        Run MACD backtest for the selected stock
+        """
         currentIndex = self.ui.listWidget.currentRow()
         symbol = self.ui.listWidget.item(currentIndex).text()
         stock = Stock(symbol)
@@ -221,6 +284,9 @@ class window(QtWidgets.QMainWindow):
         self.ui.listWidget_2.addItems(optim)
     
     def filter_items(self):
+        """
+        Filter the list of owned stocks based on the entered text.
+        """
         search_text = self.ui.lineEdit.text().lower()
 
         for i in range(self.ui.listWidget.count()):

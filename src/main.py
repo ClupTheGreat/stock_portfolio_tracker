@@ -4,6 +4,9 @@ from stock_portfolio import *
 from stock import *
 from data_loader import *
 
+"""
+Text based main ( Deprecated )
+"""
 
 all_list_of_stocks = list_of_stocks()
 
@@ -34,13 +37,6 @@ def in_portfolio_menu(selection_key):
 
         elif choice == 4:
             break
-        # elif choice == 2:
-        #     print("Select stocks to remove")
-        #     print(list(current_portfolio.stocks_owned))
-        #     symbol = input("Enter symbol: ")
-        #     quantity = int(input("Enter quantity of stocks: "))
-        #     current_portfolio.remove_stock(symbol,value)
-
     
     current_portfolio.add_stock(Stock("ZOMATO"),10,106.5)
     print(current_portfolio.total_portfolio_value())
@@ -49,11 +45,8 @@ def in_portfolio_menu(selection_key):
 def create_portfolio(portfolios):
     portfolio_key = input("Enter a key for your portfolio: ")
     portfolio = StockPortfolio()
-    # portfolio.add_stock(Stock("Zomato"),10,100)
-    # print(portfolio.total_portfolio_value())
     portfolios[portfolio_key] = portfolio
     print(f"Portfolio with key '{portfolio_key}' created!\n")
-    # print(portfolios)
 
 def select_portfolio(portfolios):
     print("Select a portfolio:")
