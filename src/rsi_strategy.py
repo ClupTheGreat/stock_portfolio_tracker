@@ -42,7 +42,7 @@ def getSignals(df):
                     Selling_dates.append(df.iloc[i+j+1].name)
     return Buying_dates, Selling_dates
 
-def runTest(stock)
+def runTest(stock):
     frame = RSIcalc(stock)
     buy, sell = getSignals(frame)
     plt.figure(figsize=(12,5))

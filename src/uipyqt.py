@@ -35,16 +35,7 @@ def delete_portfolio():
         print("No portfolio found.")
 
 portfolio = load_portfolio()
-# delete_portfolio()
-# Test adding stocks
-# portfolio.add_stock(Stock("ZOMATO"), 12, 100)
-# portfolio.add_stock(Stock("TCS"), 12, 100)
 
-#Creates a list of all owned stocks by the portfolio
-
-# for i in portfolio.stocks_owned.items():
-#     list_of_owned_stocks.append(i[0]+"@"+str(f"{i[1]['purchase_price']:.2f}")+" - Quantity: "+str(i[1]['quantity']))
-#     print(i)
 def loading_stocks():
     list_of_owned_stocks = []
     for i in portfolio.stocks_owned.items():
