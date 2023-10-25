@@ -7,6 +7,8 @@ from sqlite_commands import *
 from stock_portfolio import *
 from stock import *
 from data_loader import *
+from visualization import *
+from strats import *
 
 #Creating a portfolio and saving function
 def load_portfolio():
@@ -82,7 +84,14 @@ class window(QtWidgets.QMainWindow):
         self.ui.pushButton.clicked.connect(self.buyStock_o)
         self.ui.sell_stock.clicked.connect(self.sellStock)
         self.ui.pushButton_2.clicked.connect(self.sellStock_o)
-        self.ui.pushButton_3.clicked.connect(self.analyze)
+        self.ui.daily_chart.clicked.connect(self.dailyChart)
+        self.ui.weekly_chart.clicked.connect(self.weeklyChart)
+        self.ui.monthly_chart.clicked.connect(self.monthlyChart)
+        self.ui.get_sma.clicked.connect(self.getSMA)
+        self.ui.get_macd.clicked.connect(self.getMACD)
+        self.ui.get_rsi.clicked.connect(self.getRSI)
+        self.ui.anal_macd.clicked.connect(self.analMACD)
+        self.ui.anal_sma.clicked.connect(self.analSMA)
         self.loadGlobalStocks()
         self.portfolioValue()
         self.holdingsValue()
@@ -165,10 +174,60 @@ class window(QtWidgets.QMainWindow):
             self.portfolioValue()
             self.holdingsValue()
     
-    def analyze(self):
+    #TODO
+    def dailyChart(self):
         currentIndex = self.ui.listWidget.currentRow()
         symbol = self.ui.listWidget.item(currentIndex).text()
-        do_test(symbol)
+        stock = Stock(symbol)
+        stock.create_chart_daily()
+
+    def weeklyChart(self):
+        currentIndex = self.ui.listWidget.currentRow()
+        symbol = self.ui.listWidget.item(currentIndex).text()
+        stock = Stock(symbol)
+        stock.create_chart_weekly()
+
+    
+    def monthlyChart(self):
+        currentIndex = self.ui.listWidget.currentRow()
+        symbol = self.ui.listWidget.item(currentIndex).text()
+        stock = Stock(symbol)
+        stock.create_chart_monthly()
+
+    def getSMA(self):
+        currentIndex = self.ui.listWidget.currentRow()
+        symbol = self.ui.listWidget.item(currentIndex).text()
+        stock = Stock(symbol)
+        sma_visualization(stock.daily_data)
+
+
+    def getMACD(self):
+        currentIndex = self.ui.listWidget.currentRow()
+        symbol = self.ui.listWidget.item(currentIndex).text()
+        stock = Stock(symbol)
+        macd_visualization(stock.daily_data)
+
+    def getRSI(self):
+        currentIndex = self.ui.listWidget.currentRow()
+        symbol = self.ui.listWidget.item(currentIndex).text()
+        stock = Stock(symbol)
+        rsi_visualization(stock.daily_data)
+
+    def analMACD(self):
+        currentIndex = self.ui.listWidget.currentRow()
+        symbol = self.ui.listWidget.item(currentIndex).text()
+        stock = Stock(symbol)
+        optim = run_backtest_macd(stock)
+        self.ui.listWidget_2.clear()
+        self.ui.listWidget_2.addItems(optim)
+
+    def analSMA(self):
+        currentIndex = self.ui.listWidget.currentRow()
+        symbol = self.ui.listWidget.item(currentIndex).text()
+        stock = Stock(symbol)
+        optim = run_backtest_sma(stock)
+        self.ui.listWidget_2.clear()
+        self.ui.listWidget_2.addItems(optim)
     
     def filter_items(self):
         search_text = self.ui.lineEdit.text().lower()

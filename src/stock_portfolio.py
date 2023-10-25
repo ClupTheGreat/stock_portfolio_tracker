@@ -36,6 +36,9 @@ class StockPortfolio:
                 print ("You cant sell stocks more than what you own")
         else:
             print("Enter a valid stock to remove")
+        if stocks in self.stocks_owned:
+            if self.stocks_owned[stocks]['quantity'] == 0:
+                del self.stocks_owned[stocks]
     
     def total_portfolio_value(self):
         self.stock_portfolio_value = 0.0

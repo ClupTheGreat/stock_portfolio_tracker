@@ -1,9 +1,11 @@
 import sys
 from data_loader import DataLoader
-from datetime import timedelta
 import sqlite_commands
 import time
 import mplfinance as mpf
+import talib as ta
+import matplotlib.pyplot as plt
+
 
 stock_names_list = []
 
@@ -36,17 +38,21 @@ class Stock:
         print(stock_historical)
     
     def create_chart_daily(self):
-        mpf.plot(self.daily_data, type = "candle", style="yahoo")
+        mpf.plot(self.daily_data, type = "candle", style="binance")
 
     def create_chart_weekly(self):
-        mpf.plot(self.weekly_data, type = "candle", style="yahoo")
+        mpf.plot(self.weekly_data, type = "candle", style="binance")
 
     def create_chart_monthly(self):
-        mpf.plot(self.monthly_data, type = "candle", style="yahoo")
+        mpf.plot(self.monthly_data, type = "candle", style="binance")
+
+
+    
 
 
 # start = time.time()
 # stock1 = Stock("ZOMATO")
+# print(stock1.daily_data.Close)
 # stock2 = Stock("TCS")
 # stock3 = Stock("INFY")
 # stock4 = Stock("HDFCBANK")

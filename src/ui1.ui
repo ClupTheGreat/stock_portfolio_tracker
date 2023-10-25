@@ -28,14 +28,14 @@
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
-      <string>Tab 1</string>
+      <string>Portfolio</string>
      </attribute>
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
         <x>30</x>
         <y>20</y>
-        <width>491</width>
+        <width>631</width>
         <height>81</height>
        </rect>
       </property>
@@ -46,7 +46,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Your Investment Value: </string>
+       <string>Your Total Investment Value: </string>
       </property>
      </widget>
      <widget class="QListWidget" name="list_stock">
@@ -62,8 +62,8 @@
      <widget class="QLabel" name="value_investment">
       <property name="geometry">
        <rect>
-        <x>530</x>
-        <y>40</y>
+        <x>650</x>
+        <y>30</y>
         <width>341</width>
         <height>51</height>
        </rect>
@@ -83,7 +83,7 @@
        <rect>
         <x>20</x>
         <y>510</y>
-        <width>491</width>
+        <width>531</width>
         <height>81</height>
        </rect>
       </property>
@@ -94,13 +94,13 @@
        </font>
       </property>
       <property name="text">
-       <string>Your Portfolio Value: </string>
+       <string>Current portfolio value: </string>
       </property>
      </widget>
      <widget class="QLabel" name="value_investment_2">
       <property name="geometry">
        <rect>
-        <x>490</x>
+        <x>560</x>
         <y>530</y>
         <width>341</width>
         <height>51</height>
@@ -152,7 +152,7 @@
     </widget>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
-      <string>Tab 2</string>
+      <string>Stock Buying / Analysis</string>
      </attribute>
      <widget class="QListWidget" name="listWidget">
       <property name="geometry">
@@ -188,8 +188,8 @@
        <rect>
         <x>440</x>
         <y>140</y>
-        <width>77</width>
-        <height>221</height>
+        <width>80</width>
+        <height>531</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -208,9 +208,58 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_3">
+        <widget class="QPushButton" name="daily_chart">
          <property name="text">
-          <string>ANALYSIS</string>
+          <string>Daily Chart</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="weekly_chart">
+         <property name="text">
+          <string>Weekly Chart</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="monthly_chart">
+         <property name="text">
+          <string>Monthly Chart</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="get_sma">
+         <property name="text">
+          <string>Get SMA</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="get_macd">
+         <property name="text">
+          <string>Get MACD</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="get_rsi">
+         <property name="text">
+          <string>Get RSI</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="anal_macd">
+         <property name="text">
+          <string>Analyse MACD</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="anal_sma">
+         <property name="text">
+          <string>Analyse SMA</string>
          </property>
         </widget>
        </item>
@@ -224,6 +273,35 @@
         <width>341</width>
         <height>41</height>
        </rect>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="listWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>560</x>
+        <y>130</y>
+        <width>341</width>
+        <height>591</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>680</x>
+        <y>70</y>
+        <width>191</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Noto Mono</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Analysis</string>
       </property>
      </widget>
     </widget>
