@@ -116,7 +116,7 @@
        <string>TextLabel</string>
       </property>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>480</x>
@@ -183,17 +183,7 @@
        <string>Available Stocks</string>
       </property>
      </widget>
-     <widget class="QTextEdit" name="textEdit">
-      <property name="geometry">
-       <rect>
-        <x>40</x>
-        <y>80</y>
-        <width>341</width>
-        <height>31</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>440</x>
@@ -225,6 +215,16 @@
         </widget>
        </item>
       </layout>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>70</y>
+        <width>341</width>
+        <height>41</height>
+       </rect>
+      </property>
      </widget>
     </widget>
    </widget>

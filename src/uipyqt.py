@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QInputDialog, QLineEdit, QMessageBox
 from ui1 import Ui_MainWindow
 import sys
@@ -33,6 +33,7 @@ def delete_portfolio():
         print("No portfolio found.")
 
 portfolio = load_portfolio()
+# delete_portfolio()
 # Test adding stocks
 # portfolio.add_stock(Stock("ZOMATO"), 12, 100)
 # portfolio.add_stock(Stock("TCS"), 12, 100)
@@ -45,9 +46,9 @@ portfolio = load_portfolio()
 def loading_stocks():
     list_of_owned_stocks = []
     for i in portfolio.stocks_owned.items():
+        print(portfolio.stocks_owned)
         stock_name = i[0]
         purchase_price = i[1]['purchase_price']
-
         # Convert purchase_price to float if it's a string
         if isinstance(purchase_price, str):
             purchase_price = float(purchase_price)
@@ -78,11 +79,12 @@ class window(QtWidgets.QMainWindow):
         self.loadStocks()
         self.ui.add_stock.clicked.connect(self.addStock)
         self.ui.buy_stock.clicked.connect(self.buyStock)
+        self.ui.lineEdit.textChanged.connect(self.filter_items)
+        self.ui.pushButton.clicked.connect(self.buyStock_o)
         self.loadGlobalStocks()
         self.portfolioValue()
         self.holdingsValue()
 
-        self.ui.lineEdit.connect(self.filter_items)
 
     def portfolioValue(self):
         portfolio_value = portfolio.total_portfolio_value()
@@ -124,16 +126,31 @@ class window(QtWidgets.QMainWindow):
             portfolio.add_stock(stocks,stock_qty,stocks.price)
             save_portfolio(portfolio)
             self.loadStocks()
+            self.portfolioValue()
+            self.holdingsValue()
+    
+    def buyStock_o(self):
+        currentIndex = self.ui.listWidget.currentRow()
+        stock = self.ui.listWidget.item(currentIndex).text()
+        stock_qty, ok = QInputDialog.getText(self,"Add to your stock", "Stock Quantity")
+        if ok and stock_qty is not None:
+            stocks = Stock(stock)
+            portfolio.add_stock(stocks,stock_qty,stocks.price)
+            save_portfolio(portfolio)
+            self.loadStocks()
+            self.portfolioValue()
+            self.holdingsValue()
     
     def filter_items(self):
-        search_text = self.search_box.text().lower()
-        for i in range(self.listWidget.count()):
-            item = self.listWidget.item(i)
+        search_text = self.ui.lineEdit.text().lower()
+
+        for i in range(self.ui.listWidget.count()):
+            item = self.ui.listWidget.item(i)
             if search_text in item.text().lower():
                 item.setHidden(False)
             else:
                 item.setHidden(True)
-
+                
 def app():
     app = QtWidgets.QApplication(sys.argv)
     win = window()

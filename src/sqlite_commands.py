@@ -3,6 +3,7 @@ import os
 import time
 import pandas as pd
 from data_loader import DataLoader
+from datetime import datetime
 
 #TODO: Create a method which allows you to delete
 
@@ -90,6 +91,7 @@ def add_stock_to_db():
 #Will be using this same function, since we have the latestdate, individually update whenever the stock is selected
 def add_price_to_db(symbol, interval):
   get_stock_id = "SELECT DISTINCT stock_id FROM stock WHERE symbol = '{}'".format(symbol)
+  print(symbol)
   c.execute(get_stock_id)
   stock_id = c.fetchone()[0]
   data_loader = DataLoader()
@@ -203,11 +205,23 @@ def get_stock_id_from_symbol(symbol):
   return val
 
 def get_current_prices(symbol):
-  add_price_to_db(symbol,"daily")
+  
+  
   stock_id = get_stock_id_from_symbol(symbol)
   query = 'SELECT close,MAX(date) FROM stock_price_daily WHERE stock_id == {};'.format(stock_id)
   c.execute(query)
-  return c.fetchall()[0][0]
+  data = c.fetchall()
+  today = datetime.now()
+  date = str(data[0][1])[0:10]
+  conv = datetime.strptime(date,"%Y-%m-%d")
+  if (today>conv):
+    add_price_to_db(symbol,"daily")
+    query = 'SELECT close,MAX(date) FROM stock_price_daily WHERE stock_id == {};'.format(stock_id)
+    c.execute(query)
+    data = c.fetchall()
+  
+  price = data[0][0]
+  return price
 
   
 def list_of_stocks():
@@ -221,11 +235,11 @@ def list_of_stocks():
 # Run this file to execute the above function and add all the stocks to database
 # add_stock_to_db()
 
-stock_list = pd.read_csv(os.path.join("data","nse_symbols.csv"))
-for i in range(len(stock_list["Sr. No."])):
-  add_price_to_db(stock_list["Symbol"][i],"monthly")
-  add_price_to_db(stock_list["Symbol"][i],"daily")
-  add_price_to_db(stock_list["Symbol"][i],"weekly")
+# stock_list = pd.read_csv(os.path.join("data","nse_symbols.csv"))
+# for i in range(len(stock_list["Sr. No."])):
+#   add_price_to_db(stock_list["Symbol"][i],"monthly")
+#   add_price_to_db(stock_list["Symbol"][i],"daily")
+#   add_price_to_db(stock_list["Symbol"][i],"weekly")
 
 
 # add_price_to_db("TCS","monthly")
