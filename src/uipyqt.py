@@ -136,7 +136,7 @@ class window(QtWidgets.QMainWindow):
         stock = self.ui.listWidget.item(currentIndex).text()
         stock_qty, ok = QInputDialog.getText(self,"Add to your stock", "Stock Quantity")
         if ok and stock_qty is not None:
-            stocks = Stock(stock)
+            stocks = Stock(stock, None)
             portfolio.add_stock(stocks,stock_qty,stocks.price)
             save_portfolio(portfolio)
             self.loadStocks()

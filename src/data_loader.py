@@ -9,16 +9,16 @@ import os
 # yf.pdr_override()
 class DataLoader:
     def get_stock_data(self, symbol):
-        ticker = yf.download(symbol+".NS", interval='1d')
+        ticker = yf.download(symbol+".NS", interval='1d', period='3mo')
         return ticker
         # return ticker.tail(1)
 
     def get_stock_data_weekly(self, symbol):
-        ticker = yf.download(symbol+".NS", interval='1wk')
+        ticker = yf.download(symbol+".NS", interval='1wk', period='1y')
         return ticker
     
     def get_stock_data_monthly(self, symbol):
-        ticker = yf.download(symbol+".NS", interval='1mo')
+        ticker = yf.download(symbol+".NS", interval='1mo', period='5y')
         return ticker
 
     def get_stock_data_historical(self, symbol):

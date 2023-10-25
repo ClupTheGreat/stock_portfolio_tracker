@@ -64,7 +64,9 @@ class StockPortfolio:
         list_current_price = []
         for i in list_of_stocks:
             symbol = i[0]
-            current_price = sqlite_commands.get_current_prices(symbol)
+            get_price = stock.Stock(symbol,"")
+            # current_price = sqlite_commands.get_current_prices(symbol)
+            current_price = get_price.price
             list_current_price.append(current_price*float(i[1]["quantity"]))
         for j in list_current_price:
             self.stocks_holdings_value+=j
