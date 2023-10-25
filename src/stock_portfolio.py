@@ -22,14 +22,14 @@ class StockPortfolio:
             self.stocks_owned[stocks_data.symbol]['purchase_price'] = (float((self.stocks_owned[stocks_data.symbol]['purchase_price']+float(purchase_price)))/2)
         
     def remove_stock(self, stocks, quantity):
-        
+        # print("rem",stocks)
         #TODO
         #Remove stock from portfolio
-        if stocks.symbol in self.stocks:
-            if quantity == self.stocks_owned['quantity']:
-                del self.stocks_owned[stocks.symbol]
-            elif quantity <= self.stocks_owned['quantity']:
-                self.stocks_owned['quantity'] -= quantity
+        if stocks in self.stocks_owned:
+            if quantity == self.stocks_owned[stocks]['quantity']:
+                del self.stocks_owned[stocks]
+            elif int(quantity) <= int(self.stocks_owned[stocks]['quantity']):
+                self.stocks_owned[stocks]['quantity'] = int(self.stocks_owned[stocks]['quantity']) - int(quantity)
             elif quantity > 0:
                 print ("Wrong amout")
             else:

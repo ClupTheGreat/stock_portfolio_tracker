@@ -206,7 +206,6 @@ def get_stock_id_from_symbol(symbol):
 
 def get_current_prices(symbol):
   
-  
   stock_id = get_stock_id_from_symbol(symbol)
   query = 'SELECT close,MAX(date) FROM stock_price_daily WHERE stock_id == {};'.format(stock_id)
   c.execute(query)

@@ -67,7 +67,6 @@ def global_all_stocks():
         clean_stocks.append(i[0])
     return clean_stocks
 
-
 #PYQT UI
 
 class window(QtWidgets.QMainWindow):
@@ -81,6 +80,9 @@ class window(QtWidgets.QMainWindow):
         self.ui.buy_stock.clicked.connect(self.buyStock)
         self.ui.lineEdit.textChanged.connect(self.filter_items)
         self.ui.pushButton.clicked.connect(self.buyStock_o)
+        self.ui.sell_stock.clicked.connect(self.sellStock)
+        self.ui.pushButton_2.clicked.connect(self.sellStock_o)
+        self.ui.pushButton_3.clicked.connect(self.analyze)
         self.loadGlobalStocks()
         self.portfolioValue()
         self.holdingsValue()
@@ -140,6 +142,33 @@ class window(QtWidgets.QMainWindow):
             self.loadStocks()
             self.portfolioValue()
             self.holdingsValue()
+    
+    def sellStock(self):
+        currentIndex = self.ui.list_stock.currentRow()
+        stock = self.ui.list_stock.item(currentIndex).text().split('@')[0]
+        stock_qty, ok = QInputDialog.getText(self,"How many stocks to sell?", "Stock Quantity")
+        if ok and stock_qty is not None:
+            portfolio.remove_stock(stock,stock_qty)
+            save_portfolio(portfolio)
+            self.loadStocks()
+            self.portfolioValue()
+            self.holdingsValue()
+    
+    def sellStock_o(self):
+        currentIndex = self.ui.listWidget.currentRow()
+        stock = self.ui.listWidget.item(currentIndex).text()
+        stock_qty, ok = QInputDialog.getText(self,"How many stocks to sell?", "Stock Quantity")
+        if ok and stock_qty is not None:
+            portfolio.remove_stock(stock,stock_qty)
+            save_portfolio(portfolio)
+            self.loadStocks()
+            self.portfolioValue()
+            self.holdingsValue()
+    
+    def analyze(self):
+        currentIndex = self.ui.listWidget.currentRow()
+        symbol = self.ui.listWidget.item(currentIndex).text()
+        do_test(symbol)
     
     def filter_items(self):
         search_text = self.ui.lineEdit.text().lower()
