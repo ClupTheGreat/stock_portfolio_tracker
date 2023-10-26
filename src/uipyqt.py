@@ -205,7 +205,6 @@ class window(QtWidgets.QMainWindow):
             self.portfolioValue()
             self.holdingsValue()
     
-    #TODO
     def dailyChart(self):
         """
         Display daily stock chart for the selected stock
