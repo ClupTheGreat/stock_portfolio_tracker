@@ -146,6 +146,7 @@ class window(QtWidgets.QMainWindow):
             save_portfolio(portfolio)
             self.loadStocks()
             self.portfolioValue()
+            self.holdingsValue()
     
     def buyStock(self):
         """

@@ -43,7 +43,7 @@ class StockPortfolio:
             elif int(quantity) <= int(self.stocks_owned[stocks]['quantity']):
                 self.stocks_owned[stocks]['quantity'] = int(self.stocks_owned[stocks]['quantity']) - int(quantity)
             elif quantity > 0:
-                print ("Wrong amout")
+                print ("Wrong amount")
             else:
                 print ("You cant sell stocks more than what you own")
         else:

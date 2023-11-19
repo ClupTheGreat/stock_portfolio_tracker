@@ -14,17 +14,17 @@ class Stock:
         if string is not None:
             self.symbol = symbol
             self.data_loader = DataLoader()
-            self.daily_data = self.data_loader.get_stock_data(symbol)
+            self.daily_data = self.data_loader.get_stock_data(self.symbol)
             self.price = float(self.daily_data.tail(1)['Close'])
         elif string is None:
             # Initialize daily, weekly and monthly stock data
             self.symbol = symbol
             self.data_loader = DataLoader()
-            self.daily_data = self.data_loader.get_stock_data(symbol)
-            self.weekly_data = self.data_loader.get_stock_data_weekly(symbol)
-            self.monthly_data = self.data_loader.get_stock_data_monthly(symbol)
+            self.daily_data = self.data_loader.get_stock_data(self.symbol)
+            self.weekly_data = self.data_loader.get_stock_data_weekly(self.symbol)
+            self.monthly_data = self.data_loader.get_stock_data_monthly(self.symbol)
             self.price = float(self.daily_data.tail(1)['Close'])
-    
+        
     def save_historical(self):
         """
         Save historical stock data to a file.

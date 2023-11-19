@@ -26,130 +26,6 @@
     <property name="currentIndex">
      <number>0</number>
     </property>
-    <widget class="QWidget" name="tab">
-     <attribute name="title">
-      <string>Portfolio</string>
-     </attribute>
-     <widget class="QLabel" name="label">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>20</y>
-        <width>631</width>
-        <height>81</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Noto Mono</family>
-        <pointsize>28</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Your Total Investment Value: </string>
-      </property>
-     </widget>
-     <widget class="QListWidget" name="list_stock">
-      <property name="geometry">
-       <rect>
-        <x>50</x>
-        <y>110</y>
-        <width>361</width>
-        <height>371</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="value_investment">
-      <property name="geometry">
-       <rect>
-        <x>650</x>
-        <y>30</y>
-        <width>341</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Noto Mono</family>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_3">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>510</y>
-        <width>531</width>
-        <height>81</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Noto Mono</family>
-        <pointsize>28</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Current portfolio value: </string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="value_investment_2">
-      <property name="geometry">
-       <rect>
-        <x>560</x>
-        <y>530</y>
-        <width>341</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Noto Mono</family>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-     </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>480</x>
-        <y>180</y>
-        <width>91</width>
-        <height>231</height>
-       </rect>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QPushButton" name="add_stock">
-         <property name="text">
-          <string>Add</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="buy_stock">
-         <property name="text">
-          <string>BUY</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="sell_stock">
-         <property name="text">
-          <string>SELL</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </widget>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
       <string>Stock Buying / Analysis</string>
@@ -303,6 +179,130 @@
       <property name="text">
        <string>Analysis</string>
       </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Portfolio</string>
+     </attribute>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>20</y>
+        <width>631</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Noto Mono</family>
+        <pointsize>28</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Your Total Investment Value: </string>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="list_stock">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>110</y>
+        <width>361</width>
+        <height>371</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="value_investment">
+      <property name="geometry">
+       <rect>
+        <x>650</x>
+        <y>30</y>
+        <width>341</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Noto Mono</family>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>510</y>
+        <width>531</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Noto Mono</family>
+        <pointsize>28</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Current portfolio value: </string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="value_investment_2">
+      <property name="geometry">
+       <rect>
+        <x>560</x>
+        <y>530</y>
+        <width>341</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Noto Mono</family>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>480</x>
+        <y>180</y>
+        <width>91</width>
+        <height>231</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="add_stock">
+         <property name="text">
+          <string>Add</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buy_stock">
+         <property name="text">
+          <string>BUY</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="sell_stock">
+         <property name="text">
+          <string>SELL</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </widget>
