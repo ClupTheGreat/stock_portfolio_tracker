@@ -10,6 +10,16 @@ from data_loader import *
 from visualization import *
 from strats import *
 
+username = ""
+
+def show_info_messagebox(message): 
+    msg = QMessageBox() 
+    msg.setIcon(QMessageBox.Information) 
+    msg.setText(message) 
+    msg.setWindowTitle("Register") 
+    msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel) 
+    retval = msg.exec_()
+
 # Creating a portfolio and saving function
 def load_portfolio(username):
     """
@@ -100,6 +110,13 @@ class windowManager(QtWidgets.QMainWindow):
         self.loadGlobalStocks()
         self.update()
 
+    def set_username(self,usname):
+        global username
+        global portfolio
+        username = usname
+        portfolio = load_portfolio(username)
+        self.update()
+
     def update(self):
         self.loadStocks()
         self.portfolioValue()
@@ -145,10 +162,13 @@ class windowManager(QtWidgets.QMainWindow):
         stock = self.ui.list_stock.item(currentIndex).text().split('@')[0]
         stock_qty, ok = QInputDialog.getText(self,"Add to your stock", "Stock Quantity")
         stock_value, ok = QInputDialog.getText(self,"Add to your stock", "Purchased at what price?")
-        if ok and stock_qty is not None and stock_value is not None:
-            portfolio.add_stock(Stock(stock),stock_qty, stock_value)
-            save_portfolio(portfolio)
-            self.update()
+        try:
+            if ok and int(stock_qty) > 0 and int(stock_value) > 0:
+                portfolio.add_stock(Stock(stock),stock_qty, stock_value)
+                save_portfolio(portfolio,username)
+                self.update()
+        except:
+            show_info_messagebox("Enter your stock quantity or price correctly")
     
     def buyStock(self):
         """
@@ -157,12 +177,15 @@ class windowManager(QtWidgets.QMainWindow):
         currentIndex = self.ui.list_stock.currentRow()
         stock = self.ui.list_stock.item(currentIndex).text().split('@')[0]
         stock_qty, ok = QInputDialog.getText(self,"Add to your stock", "Stock Quantity")
-        if ok and stock_qty is not None:
-            stocks = Stock(stock)
-            portfolio.add_stock(stocks,stock_qty,stocks.price)
-            save_portfolio(portfolio)
-            self.update()
-    
+        try:
+            if ok and int(stock_qty) > 0:
+                stocks = Stock(stock)
+                portfolio.add_stock(stocks,stock_qty,stocks.price)
+                save_portfolio(portfolio,username)
+                self.update()
+        except:
+            show_info_messagebox("Enter your stock quantity or price correctly")
+
     def buyStock_o(self):
         """
         Buy additional stock from the other tab
@@ -170,11 +193,14 @@ class windowManager(QtWidgets.QMainWindow):
         currentIndex = self.ui.listWidget.currentRow()
         stock = self.ui.listWidget.item(currentIndex).text()
         stock_qty, ok = QInputDialog.getText(self,"Add to your stock", "Stock Quantity")
-        if ok and stock_qty is not None:
-            stocks = Stock(stock, None)
-            portfolio.add_stock(stocks,stock_qty,stocks.price)
-            save_portfolio(portfolio)
-            self.update()
+        try:
+            if ok and int(stock_qty) > 0:
+                stocks = Stock(stock, None)
+                portfolio.add_stock(stocks,stock_qty,stocks.price)
+                save_portfolio(portfolio,username)
+                self.update()
+        except:
+            show_info_messagebox("Enter your stock quantity or price correctly")
     
     def sellStock(self):
         """
@@ -183,10 +209,13 @@ class windowManager(QtWidgets.QMainWindow):
         currentIndex = self.ui.list_stock.currentRow()
         stock = self.ui.list_stock.item(currentIndex).text().split('@')[0]
         stock_qty, ok = QInputDialog.getText(self,"How many stocks to sell?", "Stock Quantity")
-        if ok and stock_qty is not None:
-            portfolio.remove_stock(stock,stock_qty)
-            save_portfolio(portfolio)
-            self.update()
+        try:
+            if ok and int(stock_qty) > 0:
+                portfolio.remove_stock(stock,stock_qty)
+                save_portfolio(portfolio,username)
+                self.update()
+        except:
+            show_info_messagebox("Enter your stock quantity or price correctly")
     
     def sellStock_o(self):
         """
@@ -195,10 +224,13 @@ class windowManager(QtWidgets.QMainWindow):
         currentIndex = self.ui.listWidget.currentRow()
         stock = self.ui.listWidget.item(currentIndex).text()
         stock_qty, ok = QInputDialog.getText(self,"How many stocks to sell?", "Stock Quantity")
-        if ok and stock_qty is not None:
-            portfolio.remove_stock(stock,stock_qty)
-            save_portfolio(portfolio)
-            self.update()
+        try:
+            if ok and int(stock_qty) > 0:
+                portfolio.remove_stock(stock,stock_qty)
+                save_portfolio(portfolio,username)
+                self.update()
+        except:
+            show_info_messagebox("Enter your stock quantity or price correctly")
     
     def dailyChart(self):
         """

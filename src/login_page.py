@@ -29,6 +29,8 @@ def login_page_call():
         if res[0] == True:
             loginWindow.hide()
             application.show()
+            application.set_username(username)
+            
             # appMain(res[1])
         else:
             show_info_messagebox()
