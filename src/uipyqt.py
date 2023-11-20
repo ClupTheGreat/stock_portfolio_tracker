@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QInputDialog, QLineEdit, QMessageBox
-from ui1 import Ui_MainWindow
+from ui1 import Ui_StockManager
 import sys
 from strategy_tester import *
 from sqlite_commands import *
@@ -78,7 +78,7 @@ def global_all_stocks():
 class window(QtWidgets.QMainWindow):
     def __init__(self):
         super(window, self).__init__()
-        self.ui = Ui_MainWindow()
+        self.ui = Ui_StockManager()
         self.ui.setupUi(self)
 
         self.loadStocks()
@@ -296,10 +296,10 @@ class window(QtWidgets.QMainWindow):
             else:
                 item.setHidden(True)
                 
-def app():
-    app = QtWidgets.QApplication(sys.argv)
-    win = window()
-    win.show()
-    sys.exit(app.exec_())
+# def app():
+#     app = QtWidgets.QApplication(sys.argv)
+#     win = window()
+#     win.show()
+#     sys.exit(app.exec_())
 
-app()
+# app()
