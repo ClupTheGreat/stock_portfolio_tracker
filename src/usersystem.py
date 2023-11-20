@@ -19,6 +19,7 @@ def register(username, password):
             cur.execute("""
                 INSERT INTO userdata (username, password) VALUES (?, ?)
             """,(username, password))
+            conn.commit()
             return True
         else:
             return False
@@ -30,7 +31,7 @@ def login(username, password):
         password = hashlib.sha256(password.encode()).hexdigest()
         cur.execute("""SELECT username, password FROM userdata WHERE username = ? AND password = ?""",(username,password))
         if cur.fetchone() == None:
-            return False
+            return False,username
         else:
             return True,username
 

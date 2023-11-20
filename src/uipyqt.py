@@ -11,12 +11,12 @@ from visualization import *
 from strats import *
 
 # Creating a portfolio and saving function
-def load_portfolio():
+def load_portfolio(username):
     """
     Load existing portfolio from a pickle file or create a new one if not found.
     """
-    if os.path.exists("saved_portfolio.pickle"):
-        with open("saved_portfolio.pickle", "rb") as file:
+    if os.path.exists(username+"_portfolio.pickle"):
+        with open(username+"_portfolio.pickle", "rb") as file:
             portfolio = pickle.load(file)
             print("Existing portfolio loaded.")
     else:
@@ -25,15 +25,15 @@ def load_portfolio():
     
     return portfolio
 
-def save_portfolio(portfolio):
+def save_portfolio(portfolio,username):
     """
     Save the portfolio to a pickle file.
     """
-    with open("saved_portfolio.pickle", "wb") as file:
+    with open(username+"_portfolio.pickle", "wb") as file:
         pickle.dump(portfolio, file)
         print("Portfolio saved.")
 
-def delete_portfolio():
+def delete_portfolio(username):
     """
     Delete the saved portfolio file if it exists.
     """
@@ -43,7 +43,9 @@ def delete_portfolio():
     else:
         print("No portfolio found.")
 
-portfolio = load_portfolio()
+
+# Create / load portfolio according to the username
+portfolio = load_portfolio("Rohan")
 
 def loading_stocks():
     """
@@ -75,13 +77,12 @@ def global_all_stocks():
 
 #PYQT UI
 
-class window(QtWidgets.QMainWindow):
+class windowManager(QtWidgets.QMainWindow):
     def __init__(self):
-        super(window, self).__init__()
+        super(windowManager, self).__init__()
         self.ui = Ui_StockManager()
         self.ui.setupUi(self)
 
-        self.loadStocks()
         self.ui.add_stock.clicked.connect(self.addStock)
         self.ui.buy_stock.clicked.connect(self.buyStock)
         self.ui.lineEdit.textChanged.connect(self.filter_items)
@@ -97,9 +98,12 @@ class window(QtWidgets.QMainWindow):
         self.ui.anal_macd.clicked.connect(self.analMACD)
         self.ui.anal_sma.clicked.connect(self.analSMA)
         self.loadGlobalStocks()
+        self.update()
+
+    def update(self):
+        self.loadStocks()
         self.portfolioValue()
         self.holdingsValue()
-
 
     def portfolioValue(self):
         """
@@ -144,9 +148,7 @@ class window(QtWidgets.QMainWindow):
         if ok and stock_qty is not None and stock_value is not None:
             portfolio.add_stock(Stock(stock),stock_qty, stock_value)
             save_portfolio(portfolio)
-            self.loadStocks()
-            self.portfolioValue()
-            self.holdingsValue()
+            self.update()
     
     def buyStock(self):
         """
@@ -159,9 +161,7 @@ class window(QtWidgets.QMainWindow):
             stocks = Stock(stock)
             portfolio.add_stock(stocks,stock_qty,stocks.price)
             save_portfolio(portfolio)
-            self.loadStocks()
-            self.portfolioValue()
-            self.holdingsValue()
+            self.update()
     
     def buyStock_o(self):
         """
@@ -174,9 +174,7 @@ class window(QtWidgets.QMainWindow):
             stocks = Stock(stock, None)
             portfolio.add_stock(stocks,stock_qty,stocks.price)
             save_portfolio(portfolio)
-            self.loadStocks()
-            self.portfolioValue()
-            self.holdingsValue()
+            self.update()
     
     def sellStock(self):
         """
@@ -188,9 +186,7 @@ class window(QtWidgets.QMainWindow):
         if ok and stock_qty is not None:
             portfolio.remove_stock(stock,stock_qty)
             save_portfolio(portfolio)
-            self.loadStocks()
-            self.portfolioValue()
-            self.holdingsValue()
+            self.update()
     
     def sellStock_o(self):
         """
@@ -202,9 +198,7 @@ class window(QtWidgets.QMainWindow):
         if ok and stock_qty is not None:
             portfolio.remove_stock(stock,stock_qty)
             save_portfolio(portfolio)
-            self.loadStocks()
-            self.portfolioValue()
-            self.holdingsValue()
+            self.update()
     
     def dailyChart(self):
         """
@@ -295,11 +289,41 @@ class window(QtWidgets.QMainWindow):
                 item.setHidden(False)
             else:
                 item.setHidden(True)
-                
-# def app():
-#     app = QtWidgets.QApplication(sys.argv)
+
+
+# def portfolio_manager(username):
+#     print(username)
 #     win = window()
+#     win.show()
+#     print("after show")
+    # def register_account(username, password):
+    #     if is_valid_username(username):
+    #         if is_valid_password(password):
+    #             res = register(username,password)
+    #             if res == True:
+    #                 show_info_messagebox("Registration successful, login with your username and password")
+    #                 registerWindow.hide()
+    #                 return True
+    #             else:
+    #                 show_info_messagebox("Username not available, Try Again!")
+    #                 return False
+    #         else:
+    #             show_info_messagebox("Wrong password length")
+    #     else:
+    #         show_info_messagebox("Wrong username length")
+    # # app = QtWidgets.QApplication(sys.argv)
+    # registerWindow = QtWidgets.QMainWindow()
+    # ui = Ui_registerWindow()
+    # ui.setupUi(registerWindow)
+    # ui.finishRegistration.clicked.connect(lambda: register_account(ui.plainTextEdit.toPlainText(), ui.plainTextEdit_2.toPlainText()))
+    # ui.cancel.clicked.connect(lambda: registerWindow.close())
+    # registerWindow.show()
+
+# def appMain(username):
+#     print(username)
+#     app = QtWidgets.QApplication(sys.argv)
+#     win = windowManager()
 #     win.show()
 #     sys.exit(app.exec_())
 
-# app()
+# appMain("Rohan")
