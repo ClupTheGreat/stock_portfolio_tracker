@@ -239,7 +239,10 @@ class windowManager(QtWidgets.QMainWindow):
         currentIndex = self.ui.listWidget.currentRow()
         symbol = self.ui.listWidget.item(currentIndex).text()
         stock = Stock(symbol)
-        stock.create_chart_daily()
+        try:
+            stock.create_chart_daily()
+        except:
+            show_info_messagebox("Internet Error, Try Again!")
 
     def weeklyChart(self):
         """
@@ -248,8 +251,11 @@ class windowManager(QtWidgets.QMainWindow):
         currentIndex = self.ui.listWidget.currentRow()
         symbol = self.ui.listWidget.item(currentIndex).text()
         stock = Stock(symbol)
-        stock.create_chart_weekly()
-    
+        try:
+            stock.create_chart_weekly()
+        except:
+            show_info_messagebox("Internet Error, Try Again!")
+
     def monthlyChart(self):
         """
         Display monthly stock chart for the selected stock
@@ -257,7 +263,10 @@ class windowManager(QtWidgets.QMainWindow):
         currentIndex = self.ui.listWidget.currentRow()
         symbol = self.ui.listWidget.item(currentIndex).text()
         stock = Stock(symbol)
-        stock.create_chart_monthly()
+        try:
+            stock.create_chart_monthly()
+        except:
+            show_info_messagebox("Internet Error, Try Again!")
 
     def getSMA(self):
         """
@@ -266,7 +275,10 @@ class windowManager(QtWidgets.QMainWindow):
         currentIndex = self.ui.listWidget.currentRow()
         symbol = self.ui.listWidget.item(currentIndex).text()
         stock = Stock(symbol)
-        sma_visualization(stock.daily_data)
+        try:
+            sma_visualization(stock.daily_data)
+        except:
+            show_info_messagebox("Internet Error, Try Again!")
 
 
     def getMACD(self):
@@ -276,7 +288,10 @@ class windowManager(QtWidgets.QMainWindow):
         currentIndex = self.ui.listWidget.currentRow()
         symbol = self.ui.listWidget.item(currentIndex).text()
         stock = Stock(symbol)
-        macd_visualization(stock.daily_data)
+        try:
+            macd_visualization(stock.daily_data)
+        except:
+            show_info_messagebox("Internet Error, Try Again!")
 
     def getRSI(self):
         """
@@ -285,7 +300,10 @@ class windowManager(QtWidgets.QMainWindow):
         currentIndex = self.ui.listWidget.currentRow()
         symbol = self.ui.listWidget.item(currentIndex).text()
         stock = Stock(symbol)
-        rsi_visualization(stock.daily_data)
+        try:
+            rsi_visualization(stock.daily_data)
+        except:
+            show_info_messagebox("Internet Error, Try Again!")
 
     def analMACD(self):
         """
@@ -293,10 +311,13 @@ class windowManager(QtWidgets.QMainWindow):
         """
         currentIndex = self.ui.listWidget.currentRow()
         symbol = self.ui.listWidget.item(currentIndex).text()
-        stock = Stock(symbol)
-        optim = run_backtest_macd(stock)
-        self.ui.listWidget_2.clear()
-        self.ui.listWidget_2.addItems(optim)
+        try:
+            stock = Stock(symbol)
+            optim = run_backtest_macd(stock)
+            self.ui.listWidget_2.clear()
+            self.ui.listWidget_2.addItems(optim)
+        except:
+            show_info_messagebox("Internet Error, Try Again!")
 
     def analSMA(self):
         """
@@ -304,10 +325,13 @@ class windowManager(QtWidgets.QMainWindow):
         """
         currentIndex = self.ui.listWidget.currentRow()
         symbol = self.ui.listWidget.item(currentIndex).text()
-        stock = Stock(symbol)
-        optim = run_backtest_sma(stock)
-        self.ui.listWidget_2.clear()
-        self.ui.listWidget_2.addItems(optim)
+        try:
+            stock = Stock(symbol)
+            optim = run_backtest_sma(stock)
+            self.ui.listWidget_2.clear()
+            self.ui.listWidget_2.addItems(optim)
+        except:
+            show_info_messagebox("Internet Error, Try Again!")
     
     def filter_items(self):
         """
